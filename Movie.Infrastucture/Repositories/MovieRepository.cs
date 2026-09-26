@@ -23,7 +23,7 @@ public class MovieRepository : IMovieRepository
     public async Task AddMovieAsync(Movie.Domain.Entities.Movie movie)
     {
         await _context.Movies.AddAsync(movie);
-        await _context.SaveChangesAsync();
+        //await _context.SaveChangesAsync();
     }
 
     public async Task<Movie.Domain.Entities.Movie> GetMovieByIdAsync(int id)
@@ -41,7 +41,7 @@ public class MovieRepository : IMovieRepository
             return null;
 
         _context.Movies.Remove(movie);
-        await _context.SaveChangesAsync();
+        //await _context.SaveChangesAsync();
 
         return movie;
     }
@@ -49,6 +49,6 @@ public class MovieRepository : IMovieRepository
     public async Task UpdateMovieAsync(Movie.Domain.Entities.Movie movie)
     {
         _context.Movies.Update(movie);
-        await _context.SaveChangesAsync();
+        //await _context.SaveChangesAsync();
     }
 }

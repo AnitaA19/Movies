@@ -7,9 +7,11 @@ namespace Movie.Service.Implementations;
 public class MovieService : IMovieService
 {
     private readonly IMovieRepository _movieRepository;
-    public MovieService(IMovieRepository movieRepository)
+    private readonly IUnitOfWork _unitOfWork;
+    public MovieService(IMovieRepository movieRepository, IUnitOfWork unitOfWork)
     {
         _movieRepository = movieRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ICollection<MovieDTO>> GetAllMoviesAsync()
@@ -54,6 +56,7 @@ public class MovieService : IMovieService
             StudioId = movieDto.StudioId
         };
         await _movieRepository.AddMovieAsync(movie);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<MovieDTO> GetMovieByIdAsync(int id)
@@ -76,9 +79,12 @@ public class MovieService : IMovieService
     public async Task<MovieDTO> DeleteMovieAsync(int id)
     {
         var movie = await _movieRepository.DeleteMovieAsync(id);
-
+    
+           
         if (movie == null)
             return null;
+
+        await _unitOfWork.SaveChangesAsync();
 
         return new MovieDTO
         {
@@ -101,6 +107,8 @@ public class MovieService : IMovieService
         movie.StudioId = movieDto.StudioId;
 
         await _movieRepository.UpdateMovieAsync(movie);
+        await _unitOfWork.SaveChangesAsync();
+
 
         return new MovieDTO
         {
