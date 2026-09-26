@@ -51,4 +51,14 @@ public class MovieRepository : IMovieRepository
         _context.Movies.Update(movie);
         //await _context.SaveChangesAsync();
     }
+
+    public async Task<ICollection<Domain.Entities.Movie>> SearchMovieAsync(int releaseYear, string countryName, int actorCount)
+    {
+        return await _context.Movies
+    .Where(m => m.ReleaseYear > releaseYear)
+    .Where(m => m.Studio.Country.Name == countryName)
+    .Where(m => m.Actors.Count == actorCount)
+    .OrderBy(m => m.Actors.Count)
+    .ToListAsync();
+    }
 }

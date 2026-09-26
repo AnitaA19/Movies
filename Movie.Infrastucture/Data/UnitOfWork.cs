@@ -1,6 +1,8 @@
-﻿namespace Movie.Infrastucture.Data;
+﻿using Movie.Domain.Interfaces;
 
-public class UnitOfWork
+namespace Movie.Infrastucture.Data;
+
+public class UnitOfWork : IUnitOfWork
 {
     private readonly MovieDbContext _context;
     public UnitOfWork(MovieDbContext context)

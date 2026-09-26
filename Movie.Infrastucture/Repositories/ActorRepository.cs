@@ -25,7 +25,7 @@ public class ActorRepository : IActorRepository
             .ToListAsync();
     }
 
-    public async Task<Actor> GetActorAsync(int id)
+    public async Task<Actor> GetActorByIdAsync(int id)
     {
         return await _context.Actors
             .Include(a => a.Movies)
@@ -35,7 +35,7 @@ public class ActorRepository : IActorRepository
     public async Task UpdateActorAsync(int id, Actor actor)
     {
         var actorExists = await _context.Actors.FirstOrDefaultAsync(a => a.Id == id);
-        if(actorExists == null)
+        if (actorExists == null)
         {
             throw new Exception("Actor not found");
         }
@@ -46,18 +46,18 @@ public class ActorRepository : IActorRepository
 
     public async Task DeleteActorAsync(int id)
     {
-        var actorExists = await _context.Actors.FirstOrDefaultAsync(a=>a.Id == id);
-        if(actorExists == null)
+        var actorExists = await _context.Actors.FirstOrDefaultAsync(a => a.Id == id);
+        if (actorExists == null)
         {
             throw new ArgumentException("Actor not found");
         }
         _context.Actors.Remove(actorExists);
     }
 
-    public async Task UpdateActorMovieAsync(int actorId, ICollection<int> movieIds)
+    public async Task UpdateActorMoviesAsync(int actorId, ICollection<int> movieIds)
     {
         var actor = await _context.Actors.Include(a => a.Movies).FirstOrDefaultAsync(a => a.Id == actorId);
-        if(actor == null)
+        if (actor == null)
         {
             throw new ArgumentException("Actor not found");
         }
@@ -65,10 +65,9 @@ public class ActorRepository : IActorRepository
         var movies = await _context.Movies.Where(m => movieIds.Contains(m.Id)).ToListAsync();
 
         actor.Movies.Clear();
-        foreach(var movie in movies)
+        foreach (var movie in movies)
         {
             actor.Movies.Add(movie);
         }
-
     }
 }
