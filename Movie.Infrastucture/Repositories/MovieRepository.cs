@@ -52,13 +52,52 @@ public class MovieRepository : IMovieRepository
         //await _context.SaveChangesAsync();
     }
 
-    public async Task<ICollection<Domain.Entities.Movie>> SearchMovieAsync(int releaseYear, string countryName, int actorCount)
+    public async Task<ICollection<Domain.Entities.Movie>> SearchMoviesByStudioAsync(
+     int year,
+     string studioName,
+     int minimumActorCount)
     {
         return await _context.Movies
-    .Where(m => m.ReleaseYear > releaseYear)
-    .Where(m => m.Studio.Country.Name == countryName)
-    .Where(m => m.Actors.Count == actorCount)
-    .OrderBy(m => m.Actors.Count)
-    .ToListAsync();
+            .Where(m =>
+                m.ReleaseYear >= year &&
+                m.Studio.Name == studioName &&
+                m.Actors.Count >= minimumActorCount)
+            .OrderByDescending(m => m.ReleaseYear)
+            .ThenBy(m => m.Title)
+            .ToListAsync();
     }
+
+    public async Task<ICollection<Domain.Entities.Movie>> SearchMoviesByCountryAsync(
+     string countryName,
+     int minimumYear,
+     int maximumActorCount)
+    {
+        return await _context.Movies
+            .Where(m =>
+                m.Studio.Country.Name == countryName &&
+                m.ReleaseYear >= minimumYear &&
+                m.Actors.Count <= maximumActorCount)
+            .OrderBy(m => m.Actors.Count)
+            .ThenByDescending(m => m.ReleaseYear)
+            .ThenBy(m => m.Title)
+            .ToListAsync();
+    }
+
+
+    public async Task<ICollection<Domain.Entities.Movie>> SearchMoviesAdvancedAsync(
+    int fromYear,
+    int toYear,
+    string countryName,
+    string titleText,
+    int minimumActorCount)
+    {
+        return await _context.Movies.Where(m => (m.ReleaseYear >= fromYear && m.ReleaseYear <= toYear) && m.Studio.Country.Name == countryName && m.Title.Contains(titleText) && m.Actors.Count >= minimumActorCount)
+            .OrderByDescending(m => m.Actors.Count)
+            .ThenByDescending(m => m.ReleaseYear)
+            .ThenBy(m => m.Studio.Name)
+            .ThenBy(m => m.Title)
+            .ToListAsync();
+    }
+
+
 }

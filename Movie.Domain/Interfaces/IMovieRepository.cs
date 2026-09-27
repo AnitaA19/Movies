@@ -10,5 +10,15 @@ public interface IMovieRepository
     Task<Movie.Domain.Entities.Movie> GetMovieByIdAsync(int id);
     Task<Movie.Domain.Entities.Movie> DeleteMovieAsync(int id);
     Task UpdateMovieAsync(Movie.Domain.Entities.Movie movie);
-    Task<ICollection<Domain.Entities.Movie>> SearchMovieAsync(int releaseYear, string countryName, int actorCount);
+    Task<ICollection<Domain.Entities.Movie>> SearchMoviesByStudioAsync(int year, string studioName, int minimumActorCount);
+    Task<ICollection<Domain.Entities.Movie>> SearchMoviesByCountryAsync(
+      string countryName,
+      int minimumYear,
+      int maximumActorCount);
+    Task<ICollection<Domain.Entities.Movie>> SearchMoviesAdvancedAsync(
+    int fromYear,
+    int toYear,
+    string countryName,
+    string titleText,
+    int minimumActorCount);
 }
