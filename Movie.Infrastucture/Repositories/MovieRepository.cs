@@ -53,11 +53,14 @@ public class MovieRepository : IMovieRepository
     }
 
     public async Task<ICollection<Domain.Entities.Movie>> SearchMoviesByStudioAsync(
-     int year,
-     string studioName,
-     int minimumActorCount)
+      int year,
+      string studioName,
+      int minimumActorCount)
     {
         return await _context.Movies
+            .Include(m => m.Studio)
+                .ThenInclude(s => s.Country)
+            .Include(m => m.Actors)
             .Where(m =>
                 m.ReleaseYear >= year &&
                 m.Studio.Name == studioName &&
@@ -68,11 +71,14 @@ public class MovieRepository : IMovieRepository
     }
 
     public async Task<ICollection<Domain.Entities.Movie>> SearchMoviesByCountryAsync(
-     string countryName,
-     int minimumYear,
-     int maximumActorCount)
+        string countryName,
+        int minimumYear,
+        int maximumActorCount)
     {
         return await _context.Movies
+            .Include(m => m.Studio)
+                .ThenInclude(s => s.Country)
+            .Include(m => m.Actors)
             .Where(m =>
                 m.Studio.Country.Name == countryName &&
                 m.ReleaseYear >= minimumYear &&
@@ -83,21 +89,28 @@ public class MovieRepository : IMovieRepository
             .ToListAsync();
     }
 
-
     public async Task<ICollection<Domain.Entities.Movie>> SearchMoviesAdvancedAsync(
-    int fromYear,
-    int toYear,
-    string countryName,
-    string titleText,
-    int minimumActorCount)
+        int fromYear,
+        int toYear,
+        string countryName,
+        string titleText,
+        int minimumActorCount)
     {
-        return await _context.Movies.Where(m => (m.ReleaseYear >= fromYear && m.ReleaseYear <= toYear) && m.Studio.Country.Name == countryName && m.Title.Contains(titleText) && m.Actors.Count >= minimumActorCount)
+        return await _context.Movies
+            .Include(m => m.Studio)
+                .ThenInclude(s => s.Country)
+            .Include(m => m.Actors)
+            .Where(m =>
+                m.ReleaseYear >= fromYear &&
+                m.ReleaseYear <= toYear &&
+                m.Studio.Country.Name == countryName &&
+                m.Title.Contains(titleText) &&
+                m.Actors.Count >= minimumActorCount)
             .OrderByDescending(m => m.Actors.Count)
             .ThenByDescending(m => m.ReleaseYear)
             .ThenBy(m => m.Studio.Name)
             .ThenBy(m => m.Title)
             .ToListAsync();
     }
-
 
 }
