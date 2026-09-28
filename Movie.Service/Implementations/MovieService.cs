@@ -19,6 +19,7 @@ public class MovieService : IMovieService
         var movies = await _movieRepository.GetAllMoviesAsync();
         var movieDto = movies.Select(m => new Movie.Domain.DTOs.MovieDTO
         {
+            Id = m.Id,
             Title = m.Title,
             ReleaseYear = m.ReleaseYear,
             StudioName = m.Studio.Name

@@ -1,0 +1,32 @@
+﻿@page
+@model Movie.Web.Pages.Movies.IndexModel
+
+@* <ul>
+@foreach(var movie in Model.Movies) {
+    <li>
+    <p>@movie.Title</p>
+    </li>
+}
+</ul> *@
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Release Year</th>
+        <th>Studio Name</th>
+    </tr>
+
+    <tbody>
+    @foreach (var movie in Model.Movies)
+    {
+        <tr>
+            <td>@movie.Title</td>
+            <td>@movie.ReleaseYear</td>
+            <td>@movie.StudioName</td>
+
+            <td><a class="nav-link text-dark" asp-area="" asp-page="/Movies/Details" asp-route-id="@movie.Id">See Details</a></td>
+                
+        </tr>
+    }
+    </tbody>
+</table>
