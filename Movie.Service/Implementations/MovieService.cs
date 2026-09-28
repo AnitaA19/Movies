@@ -71,6 +71,7 @@ public class MovieService : IMovieService
 
         return new MovieDTO
         {
+            Id = movie.Id,
             Title = movie.Title,
             ReleaseYear = movie.ReleaseYear,
             StudioName = movie.Studio.Name

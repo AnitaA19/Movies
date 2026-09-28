@@ -1,5 +1,30 @@
 ﻿@page
 @model Movie.Web.Pages.Movies.DetailsModel
 
-<h1>@Model.Movie.Title</h1>
-<p>@Model.Movie.ReleaseYear - @Model.Movie.StudioName</p>
+<div class="movies-page py-4">
+    <div class="movie-details-shell">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
+            <div>
+                <p class="text-uppercase text-muted small mb-1">Movie Details</p>
+                <h1 class="h2 mb-0">@Model.Movie.Title</h1>
+            </div>
+            <span class="badge text-bg-primary rounded-pill px-3 py-2">@Model.Movie.ReleaseYear</span>
+        </div>
+
+        <dl class="row details-list mb-4">
+            <dt class="col-sm-4 text-muted">Title</dt>
+            <dd class="col-sm-8 fw-semibold">@Model.Movie.Title</dd>
+
+            <dt class="col-sm-4 text-muted">Release Year</dt>
+            <dd class="col-sm-8 fw-semibold">@Model.Movie.ReleaseYear</dd>
+
+            <dt class="col-sm-4 text-muted">Studio</dt>
+            <dd class="col-sm-8 fw-semibold">@Model.Movie.StudioName</dd>
+
+            <dt class="col-sm-4 text-muted">Movie ID</dt>
+            <dd class="col-sm-8 fw-semibold">@Model.Movie.Id</dd>
+        </dl>
+
+        <a class="btn btn-outline-dark movie-back-btn" asp-page="/Movies/Index">← Back to Movies</a>
+    </div>
+</div>
