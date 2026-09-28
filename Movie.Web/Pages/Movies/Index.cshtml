@@ -2,34 +2,77 @@
 @model Movie.Web.Pages.Movies.IndexModel
 
 <div class="movies-page py-4">
-    <div class="movies-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
-        <div>
-            <h1 class="h3 mb-1">Movie Library</h1>
-            <p class="text-muted mb-0">Browse all movies and open details.</p>
+    <section class="movies-hero mb-4">
+        <div class="movies-hero-content">
+            <p class="movies-eyebrow mb-2">Catalog</p>
+            <h1 class="movies-hero-title mb-2">Movie Library</h1>
+            <p class="movies-hero-text mb-0">Browse every title in the collection and open its details.</p>
         </div>
-        <span class="badge rounded-pill text-bg-dark px-3 py-2">@Model.Movies.Count Movies</span>
+        <div class="movies-hero-stat">
+            <span class="movies-hero-stat-number">@Model.Movies.Count</span>
+            <span class="movies-hero-stat-label">Movies</span>
+        </div>
+    </section>
+
+    <div class="movies-toolbar mb-4">
+        <div class="movies-search">
+            <input id="movieSearch" type="search" class="form-control movies-search-input" placeholder="Search by title or studio..." autocomplete="off" />
+        </div>
+        <span id="movieCount" class="movies-count-label">@Model.Movies.Count results</span>
     </div>
 
-    <div class="row g-3">
+    <div class="row g-4" id="movieGrid">
         @foreach (var movie in Model.Movies)
         {
-            <div class="col-12 col-md-6 col-xl-4">
-                <article class="card movie-card h-100 border-0 shadow-sm">
-                    <div class="card-body d-flex flex-column">
-                        <a class="movie-title-link h5 mb-2" asp-page="/Movies/Details" asp-route-id="@movie.Id">
-                            @movie.Title
-                        </a>
-                        <div class="movie-meta text-muted small mb-3">
-                            <span class="me-2">@movie.ReleaseYear</span>
-                            <span>•</span>
-                            <span class="ms-2">@movie.StudioName</span>
+            <div class="col-12 col-md-6 col-xl-4 movie-col" data-search="@((movie.Title + " " + movie.StudioName).ToLowerInvariant())">
+                <article class="movie-card h-100">
+                    <div class="movie-card-accent"></div>
+                    <div class="movie-card-body">
+                        <div class="movie-card-top">
+                            <span class="movie-year-badge">@movie.ReleaseYear</span>
+                            <span class="movie-id-tag">#@movie.Id</span>
                         </div>
-                        <div class="mt-auto">
-                            <a class="btn btn-primary w-100" asp-page="/Movies/Details" asp-route-id="@movie.Id">View Details</a>
+
+                        <a class="movie-title-link" asp-page="/Movies/Details" asp-route-id="@movie.Id">@movie.Title</a>
+
+                        <div class="movie-studio">
+                            <span>@movie.StudioName</span>
                         </div>
+
+                        <a class="btn movie-btn-primary w-100 mt-auto" asp-page="/Movies/Details" asp-route-id="@movie.Id">View Details</a>
                     </div>
                 </article>
             </div>
         }
     </div>
+
+    <div id="movieEmpty" class="movies-empty d-none">
+        <h2 class="h5 mb-1">No movies found</h2>
+        <p class="text-muted mb-0">Try a different title or studio name.</p>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        (function () {
+            var input = document.getElementById('movieSearch');
+            var cols = document.querySelectorAll('.movie-col');
+            var count = document.getElementById('movieCount');
+            var empty = document.getElementById('movieEmpty');
+
+            input.addEventListener('input', function () {
+                var term = input.value.trim().toLowerCase();
+                var visible = 0;
+
+                cols.forEach(function (col) {
+                    var match = col.getAttribute('data-search').indexOf(term) !== -1;
+                    col.classList.toggle('d-none', !match);
+                    if (match) visible++;
+                });
+
+                count.textContent = visible + (visible === 1 ? ' result' : ' results');
+                empty.classList.toggle('d-none', visible !== 0);
+            });
+        })();
+    </script>
+}

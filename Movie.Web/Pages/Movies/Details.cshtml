@@ -2,29 +2,59 @@
 @model Movie.Web.Pages.Movies.DetailsModel
 
 <div class="movies-page py-4">
+    <nav class="movie-breadcrumb mb-3">
+        <a asp-page="/Movies/Index">Movies</a>
+        <span class="movie-breadcrumb-sep">/</span>
+        <span>@Model.Movie.Title</span>
+    </nav>
+
     <div class="movie-details-shell">
-        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
-            <div>
-                <p class="text-uppercase text-muted small mb-1">Movie Details</p>
-                <h1 class="h2 mb-0">@Model.Movie.Title</h1>
+        <div class="movie-details-hero">
+            <div class="movie-details-hero-text">
+                <p class="movies-eyebrow mb-2">Movie Details</p>
+                <h1 class="movie-details-title mb-3">@Model.Movie.Title</h1>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="movie-chip">@Model.Movie.ReleaseYear</span>
+                    <span class="movie-chip movie-chip-outline">@Model.Movie.StudioName</span>
+                </div>
             </div>
-            <span class="badge text-bg-primary rounded-pill px-3 py-2">@Model.Movie.ReleaseYear</span>
+            <div class="movie-details-id">
+                <span class="movie-details-id-label">ID</span>
+                <span class="movie-details-id-value">@Model.Movie.Id</span>
+            </div>
         </div>
 
-        <dl class="row details-list mb-4">
-            <dt class="col-sm-4 text-muted">Title</dt>
-            <dd class="col-sm-8 fw-semibold">@Model.Movie.Title</dd>
+        <div class="movie-details-body">
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <div class="detail-tile">
+                        <span class="detail-tile-label">Title</span>
+                        <span class="detail-tile-value">@Model.Movie.Title</span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="detail-tile">
+                        <span class="detail-tile-label">Release Year</span>
+                        <span class="detail-tile-value">@Model.Movie.ReleaseYear</span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="detail-tile">
+                        <span class="detail-tile-label">Studio</span>
+                        <span class="detail-tile-value">@Model.Movie.StudioName</span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="detail-tile">
+                        <span class="detail-tile-label">Movie ID</span>
+                        <span class="detail-tile-value">@Model.Movie.Id</span>
+                    </div>
+                </div>
+            </div>
 
-            <dt class="col-sm-4 text-muted">Release Year</dt>
-            <dd class="col-sm-8 fw-semibold">@Model.Movie.ReleaseYear</dd>
-
-            <dt class="col-sm-4 text-muted">Studio</dt>
-            <dd class="col-sm-8 fw-semibold">@Model.Movie.StudioName</dd>
-
-            <dt class="col-sm-4 text-muted">Movie ID</dt>
-            <dd class="col-sm-8 fw-semibold">@Model.Movie.Id</dd>
-        </dl>
-
-        <a class="btn btn-outline-dark movie-back-btn" asp-page="/Movies/Index">← Back to Movies</a>
+            <div class="movie-details-actions">
+                <a class="btn movie-btn-primary movie-back-btn" asp-page="/Movies/Index">&larr; Back to Movies</a>
+            </div>
+        </div>
     </div>
 </div>
