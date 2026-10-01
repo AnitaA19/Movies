@@ -1,6 +1,24 @@
 ﻿@page
 @model Movie.Web.Pages.Movies.IndexModel
 
+@if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+{
+    <div class="movie-toast" role="status" aria-live="polite">
+        <div class="movie-toast-icon" aria-hidden="true">✓</div>
+        <div class="movie-toast-content">
+            <strong class="movie-toast-title">Success</strong>
+            <span class="movie-toast-text">@Model.SuccessMessage</span>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.ErrorMessage
+    </div>
+}
+
 <div class="movies-page py-4">
     <section class="movies-hero mb-4">
         <div class="movies-hero-content">
@@ -15,10 +33,14 @@
     </section>
 
     <div class="movies-toolbar mb-4">
-        <div class="movies-search">
+        <div class="movies-search d-flex gap-2">
             <input id="movieSearch" type="search" class="form-control movies-search-input" placeholder="Search by title or studio..." autocomplete="off" />
+            <button type="button" id="movieSearchReset" class="btn btn-outline-secondary">Reset</button>
         </div>
-        <span id="movieCount" class="movies-count-label">@Model.Movies.Count results</span>
+        <div class="movies-toolbar-actions">
+            <span id="movieCount" class="movies-count-label">@Model.Movies.Count results</span>
+            <a asp-page="/Movies/Create" class="movie-add-link">+ Add Movie</a>
+        </div>
     </div>
 
     <div class="row g-4" id="movieGrid">
@@ -39,7 +61,13 @@
                             <span>@movie.StudioName</span>
                         </div>
 
-                        <a class="btn movie-btn-primary w-100 mt-auto" asp-page="/Movies/Details" asp-route-id="@movie.Id">View Details</a>
+                        <div class="movie-card-actions mt-auto">
+                            <a class="btn movie-btn-primary w-100" asp-page="/Movies/Details" asp-route-id="@movie.Id">View Details</a>
+                            <a class="btn movie-btn-secondary w-100" asp-page="/Movies/Edit" asp-route-id="@movie.Id">Edit</a>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@movie.Id" class="movie-delete-form">
+                                <button type="submit" class="btn movie-btn-danger w-100">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </article>
             </div>
@@ -56,11 +84,13 @@
     <script>
         (function () {
             var input = document.getElementById('movieSearch');
+            var reset = document.getElementById('movieSearchReset');
             var cols = document.querySelectorAll('.movie-col');
             var count = document.getElementById('movieCount');
             var empty = document.getElementById('movieEmpty');
+            var toast = document.querySelector('.movie-toast');
 
-            input.addEventListener('input', function () {
+            function applySearch() {
                 var term = input.value.trim().toLowerCase();
                 var visible = 0;
 
@@ -72,7 +102,32 @@
 
                 count.textContent = visible + (visible === 1 ? ' result' : ' results');
                 empty.classList.toggle('d-none', visible !== 0);
-            });
+            }
+
+            if (input) {
+                input.addEventListener('input', applySearch);
+            }
+
+            if (input && reset) {
+                reset.addEventListener('click', function () {
+                    input.value = '';
+                    applySearch();
+                    input.focus();
+                });
+            }
+
+            if (toast) {
+                setTimeout(function () {
+                    toast.style.transition = 'opacity .25s ease, transform .25s ease';
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-8px)';
+
+                    setTimeout(function () {
+                        toast.remove();
+                    }, 260);
+                }, 2800);
+            }
         })();
     </script>
 }
+

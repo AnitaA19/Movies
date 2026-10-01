@@ -1,0 +1,58 @@
+﻿@page
+@model Movie.Web.Pages.Movies.CreateModel
+
+@section Head {
+    <link rel="stylesheet" href="~/css/movie-create.css" asp-append-version="true" />
+}
+
+<div class="movie-create-page">
+    <div class="movie-create-shell">
+        <div class="movie-create-header">
+            <p class="movie-create-eyebrow mb-1">Movies</p>
+            <h1 class="movie-create-title mb-2">Create Movie</h1>
+            <p class="movie-create-subtitle mb-0">Add a new movie with clean and complete details.</p>
+        </div>
+
+        <form method="post" class="movie-create-form" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <div class="movie-form-field">
+                <label asp-for="Movie.Title" class="form-label movie-form-label">Title</label>
+                <input asp-for="Movie.Title"
+                       class="form-control movie-form-control"
+                       placeholder="e.g., Interstellar"
+                       autocomplete="off" />
+                <span asp-validation-for="Movie.Title" class="text-danger"></span>
+            </div>
+
+            <div class="movie-form-row">
+                <div class="movie-form-field">
+                    <label asp-for="Movie.ReleaseYear" class="form-label movie-form-label">Release Year</label>
+                    <input asp-for="Movie.ReleaseYear"
+                           type="number"
+                           class="form-control movie-form-control"
+                           placeholder="e.g., 2014" />
+                    <span asp-validation-for="Movie.ReleaseYear" class="text-danger"></span>
+                </div>
+
+                <div class="movie-form-field">
+                    <label asp-for="Movie.StudioId" class="form-label movie-form-label">Studio ID</label>
+                    <input asp-for="Movie.StudioId"
+                           type="number"
+                           class="form-control movie-form-control"
+                           placeholder="e.g., 7" />
+                    <span asp-validation-for="Movie.StudioId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="movie-create-actions">
+                <a asp-page="./Index" class="btn movie-btn-secondary">Cancel</a>
+                <button type="submit" class="btn movie-btn-primary">Create Movie</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

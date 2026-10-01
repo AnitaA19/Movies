@@ -35,7 +35,9 @@ public class MovieRepository : IMovieRepository
 
     public async Task<Movie.Domain.Entities.Movie> DeleteMovieAsync(int id)
     {
-        var movie = await _context.Movies.FindAsync(id);
+        var movie = await _context.Movies
+            .Include(m => m.Studio)
+            .FirstOrDefaultAsync(m => m.Id == id);
 
         if (movie == null)
             return null;

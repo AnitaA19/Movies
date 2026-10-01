@@ -1,0 +1,128 @@
+.movie-create-page {
+    min-height: calc(100vh - 220px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(180deg, #f8faff 0%, #f5f7ff 100%);
+}
+
+.movie-create-shell {
+    width: 100%;
+    max-width: 760px;
+    border: 1px solid #e5e7eb;
+    border-radius: 1.1rem;
+    background: #ffffff;
+    box-shadow: 0 20px 50px rgba(17, 24, 39, .08);
+    overflow: hidden;
+}
+
+.movie-create-header {
+    padding: 2rem 2rem 1.25rem;
+    border-bottom: 1px solid #eef0f4;
+    background: linear-gradient(180deg, #ffffff 0%, #fcfcff 100%);
+}
+
+.movie-create-eyebrow {
+    font-size: .76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: #4f46e5;
+}
+
+.movie-create-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    color: #111827;
+}
+
+.movie-create-subtitle {
+    font-size: .95rem;
+    color: #6b7280;
+}
+
+.movie-create-form {
+    padding: 1.5rem 2rem 2rem;
+}
+
+.movie-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.movie-form-field {
+    margin-bottom: 1rem;
+}
+
+.movie-form-label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: .45rem;
+}
+
+.movie-form-control {
+    border-radius: .75rem;
+    border: 1px solid #d1d5db;
+    padding: .7rem .9rem;
+    font-size: .95rem;
+    color: #111827;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.movie-form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 .2rem rgba(99, 102, 241, .18);
+}
+
+.movie-create-actions {
+    margin-top: .75rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: .65rem;
+}
+
+.movie-btn-secondary {
+    border: 1px solid #d1d5db;
+    border-radius: .7rem;
+    padding: .58rem 1rem;
+    font-weight: 600;
+    color: #374151;
+    background: #ffffff;
+}
+
+.movie-btn-secondary:hover,
+.movie-btn-secondary:focus {
+    color: #111827;
+    border-color: #9ca3af;
+    background: #f9fafb;
+}
+
+@media (max-width: 768px) {
+    .movie-create-page {
+        min-height: auto;
+        padding: 1rem .35rem;
+    }
+
+    .movie-create-header,
+    .movie-create-form {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .movie-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .movie-create-actions {
+        flex-direction: column-reverse;
+    }
+
+    .movie-create-actions .btn {
+        width: 100%;
+    }
+}

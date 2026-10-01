@@ -22,7 +22,7 @@ public class MovieService : IMovieService
             Id = m.Id,
             Title = m.Title,
             ReleaseYear = m.ReleaseYear,
-            StudioName = m.Studio.Name
+            StudioName = m.Studio?.Name ?? string.Empty
         }).ToList();
         return movieDto;
     }
@@ -74,7 +74,7 @@ public class MovieService : IMovieService
             Id = movie.Id,
             Title = movie.Title,
             ReleaseYear = movie.ReleaseYear,
-            StudioName = movie.Studio.Name
+            StudioName = movie.Studio?.Name ?? string.Empty
         };
     }
 
@@ -93,7 +93,7 @@ public class MovieService : IMovieService
             Id = movie.Id,
             Title = movie.Title,
             ReleaseYear = movie.ReleaseYear,
-            StudioName = movie.Studio.Name
+            StudioName = movie.Studio?.Name ?? string.Empty
         };
     }
 
@@ -117,7 +117,7 @@ public class MovieService : IMovieService
             Id = movie.Id,
             Title = movie.Title,
             ReleaseYear = movie.ReleaseYear,
-            StudioName = movie.Studio.Name
+            StudioName = movie.Studio?.Name ?? string.Empty
         };
     }
 }

@@ -13,11 +13,26 @@ public class DetailsModel : PageModel
         _movieService = movieService;
     }
 
-    public MovieDTO Movie { get; set; }
+    public MovieDTO? Movie { get; set; }
 
-    public async Task OnGet(int id)
+    public async Task<IActionResult> OnGetAsync(int id)
     {
-        Movie = await _movieService.GetMovieByIdAsync(id);
-        //return Page();
+        try
+        {
+            Movie = await _movieService.GetMovieByIdAsync(id);
+
+            if (Movie is null)
+            {
+                TempData["ErrorMessage"] = "Movie not found.";
+                return RedirectToPage("./Index");
+            }
+
+            return Page();
+        }
+        catch
+        {
+            TempData["ErrorMessage"] = "Unable to load movie details. Please try again.";
+            return RedirectToPage("./Index");
+        }
     }
 }
