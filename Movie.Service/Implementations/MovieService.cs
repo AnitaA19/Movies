@@ -27,6 +27,18 @@ public class MovieService : IMovieService
         return movieDto;
     }
 
+    public async Task<ICollection<MovieDTO>> SearchMoviesAsync(string? searchTerm)
+    {
+        var movies = await _movieRepository.SearchMoviesAsync(searchTerm);
+        return movies.Select(m => new MovieDTO
+        {
+            Id = m.Id,
+            Title = m.Title,
+            ReleaseYear = m.ReleaseYear,
+            StudioName = m.Studio?.Name ?? string.Empty
+        }).ToList();
+    }
+
     public async Task AddMovieAsync(CreateMovieDTO movieDto)
     {
         if (movieDto == null)

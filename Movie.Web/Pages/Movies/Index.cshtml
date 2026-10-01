@@ -34,11 +34,16 @@
 
     <div class="movies-toolbar mb-4">
         <div class="movies-search d-flex gap-2">
-            <input id="movieSearch" type="search" class="form-control movies-search-input" placeholder="Search by title or studio..." autocomplete="off" />
-            <button type="button" id="movieSearchReset" class="btn btn-outline-secondary">Reset</button>
+            <form method="get" class="d-flex gap-2 flex-grow-1">
+                <input asp-for="SearchTerm" type="search" class="form-control movies-search-input" placeholder="Search by title or studio..." autocomplete="off" />
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </form>
+            <form method="get">
+                <button type="submit" asp-page-handler="Reset" class="btn btn-outline-secondary">Reset</button>
+            </form>
         </div>
         <div class="movies-toolbar-actions">
-            <span id="movieCount" class="movies-count-label">@Model.Movies.Count results</span>
+            <span class="movies-count-label">@Model.Movies.Count results</span>
             <a asp-page="/Movies/Create" class="movie-add-link">+ Add Movie</a>
         </div>
     </div>
@@ -46,7 +51,7 @@
     <div class="row g-4" id="movieGrid">
         @foreach (var movie in Model.Movies)
         {
-            <div class="col-12 col-md-6 col-xl-4 movie-col" data-search="@((movie.Title + " " + movie.StudioName).ToLowerInvariant())">
+            <div class="col-12 col-md-6 col-xl-4 movie-col">
                 <article class="movie-card h-100">
                     <div class="movie-card-accent"></div>
                     <div class="movie-card-body">
@@ -74,47 +79,19 @@
         }
     </div>
 
-    <div id="movieEmpty" class="movies-empty d-none">
-        <h2 class="h5 mb-1">No movies found</h2>
-        <p class="text-muted mb-0">Try a different title or studio name.</p>
-    </div>
+    @if (!Model.Movies.Any())
+    {
+        <div class="movies-empty">
+            <h2 class="h5 mb-1">No movies found</h2>
+            <p class="text-muted mb-0">Try a different title or studio name.</p>
+        </div>
+    }
 </div>
 
 @section Scripts {
     <script>
         (function () {
-            var input = document.getElementById('movieSearch');
-            var reset = document.getElementById('movieSearchReset');
-            var cols = document.querySelectorAll('.movie-col');
-            var count = document.getElementById('movieCount');
-            var empty = document.getElementById('movieEmpty');
             var toast = document.querySelector('.movie-toast');
-
-            function applySearch() {
-                var term = input.value.trim().toLowerCase();
-                var visible = 0;
-
-                cols.forEach(function (col) {
-                    var match = col.getAttribute('data-search').indexOf(term) !== -1;
-                    col.classList.toggle('d-none', !match);
-                    if (match) visible++;
-                });
-
-                count.textContent = visible + (visible === 1 ? ' result' : ' results');
-                empty.classList.toggle('d-none', visible !== 0);
-            }
-
-            if (input) {
-                input.addEventListener('input', applySearch);
-            }
-
-            if (input && reset) {
-                reset.addEventListener('click', function () {
-                    input.value = '';
-                    applySearch();
-                    input.focus();
-                });
-            }
 
             if (toast) {
                 setTimeout(function () {

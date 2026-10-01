@@ -11,6 +11,9 @@ public class IndexModel : PageModel
 
     public ICollection<MovieDTO> Movies { get; set; } = new List<MovieDTO>();
 
+    [BindProperty(SupportsGet = true)]
+    public string? SearchTerm { get; set; }
+
     public string? SuccessMessage { get; private set; }
     public string? ErrorMessage { get; private set; }
 
@@ -24,9 +27,25 @@ public class IndexModel : PageModel
         SuccessMessage = TempData["SuccessMessage"] as string;
         ErrorMessage = TempData["ErrorMessage"] as string;
 
+        await LoadMoviesAsync();
+    }
+
+    public async Task OnGetResetAsync()
+    {
+        SuccessMessage = TempData["SuccessMessage"] as string;
+        ErrorMessage = TempData["ErrorMessage"] as string;
+        SearchTerm = null;
+
+        await LoadMoviesAsync();
+    }
+
+    private async Task LoadMoviesAsync()
+    {
         try
         {
-            Movies = await _movieService.GetAllMoviesAsync();
+            Movies = string.IsNullOrWhiteSpace(SearchTerm)
+                ? await _movieService.GetAllMoviesAsync()
+                : await _movieService.SearchMoviesAsync(SearchTerm);
         }
         catch
         {
