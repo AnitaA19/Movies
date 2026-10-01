@@ -20,6 +20,22 @@ public class MovieRepository : IMovieRepository
         return await _context.Movies.Include(s => s.Studio).ToListAsync();
     }
 
+    public async Task<ICollection<Movie.Domain.Entities.Movie>> GetLatestMoviesAsync(int count)
+    {
+        if (count <= 0)
+        {
+            return new List<Movie.Domain.Entities.Movie>();
+        }
+
+        return await _context.Movies
+            .AsNoTracking()
+            .Include(m => m.Studio)
+            .OrderByDescending(m => m.ReleaseYear)
+            .ThenByDescending(m => m.Id)
+            .Take(count)
+            .ToListAsync();
+    }
+
     public async Task<ICollection<Movie.Domain.Entities.Movie>> SearchMoviesAsync(string? searchTerm)
     {
         var query = _context.Movies.Include(m => m.Studio).AsQueryable();

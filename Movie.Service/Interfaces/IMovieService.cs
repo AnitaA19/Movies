@@ -5,6 +5,7 @@ namespace Movie.Service.Interfaces;
 public interface IMovieService
 {
     Task<ICollection<MovieDTO>> GetAllMoviesAsync();
+    Task<ICollection<MovieDTO>> GetLatestMoviesAsync(int count);
     Task<ICollection<MovieDTO>> SearchMoviesAsync(string? searchTerm);
     Task AddMovieAsync(CreateMovieDTO movieDto);
     Task<MovieDTO> GetMovieByIdAsync(int id);

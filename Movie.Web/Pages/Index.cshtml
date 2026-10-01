@@ -4,11 +4,17 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div class="movies-page py-4">
+    <section class="movies-hero mb-4">
+        <div class="movies-hero-content">
+            <p class="movies-eyebrow mb-2">Welcome</p>
+            <h1 class="movies-hero-title mb-2">Movie Library</h1>
+            <p class="movies-hero-text mb-0">Explore the latest additions and jump straight into the full catalog.</p>
+        </div>
+        <div class="movies-toolbar-actions">
+            <a asp-page="/Movies/Index" class="movie-add-link">Open Movies</a>
+        </div>
+    </section>
 
-@if(true) {
-    <p><a href="#">Click here</a></p>
-}
+    @await Component.InvokeAsync("LatestMovies", new { count = 3 })
+</div>

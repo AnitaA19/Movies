@@ -1,0 +1,48 @@
+@model ICollection<Movie.Domain.DTOs.MovieDTO>
+
+<section class="latest-movies-section mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <p class="movies-eyebrow mb-1">Highlights</p>
+            <h2 class="h3 mb-0">Latest Movies</h2>
+        </div>
+        <a asp-page="/Movies/Index" class="movie-add-link">Browse all</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="movies-empty">
+            <h3 class="h5 mb-1">No movies available</h3>
+            <p class="text-muted mb-0">Add a movie to see it here.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var movie in Model)
+            {
+                <div class="col-12 col-md-6 col-xl-4">
+                    <article class="movie-card h-100">
+                        <div class="movie-card-accent"></div>
+                        <div class="movie-card-body">
+                            <div class="movie-card-top">
+                                <span class="movie-year-badge">@movie.ReleaseYear</span>
+                                <span class="movie-id-tag">#@movie.Id</span>
+                            </div>
+
+                            <a class="movie-title-link" asp-page="/Movies/Details" asp-route-id="@movie.Id">@movie.Title</a>
+
+                            <div class="movie-studio">
+                                <span>@movie.StudioName</span>
+                            </div>
+
+                            <div class="movie-card-actions mt-auto">
+                                <a class="btn movie-btn-primary w-100" asp-page="/Movies/Details" asp-route-id="@movie.Id">View Details</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+    }
+</section>
